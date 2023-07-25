@@ -1,5 +1,6 @@
 <template>
   <q-layout view="lHr lpR fFf">
+    <!-- Header -->
     <q-header bordered class="bg-white text-black">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
@@ -16,6 +17,7 @@
       </q-toolbar>
     </q-header>
 
+    <!-- Left Drawer -->
     <q-drawer
       show-if-above
       v-model="leftDrawerOpen"
@@ -23,7 +25,6 @@
       :width="283"
       bordered
     >
-      <!-- drawer content -->
       <q-icon class="q-pa-md" name="fas fa-dove" size="lg" color="primary" />
 
       <q-list>
@@ -47,8 +48,8 @@
       </q-list>
     </q-drawer>
 
+    <!-- Right Drawer -->
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
-      <!-- drawer content -->
       <q-input
         outlined
         rounded
@@ -115,6 +116,7 @@
       </q-list>
     </q-drawer>
 
+    <!-- Page -->
     <q-page-container>
       <router-view v-slot="{ Component }">
         <keep-alive>
