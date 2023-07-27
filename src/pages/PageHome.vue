@@ -86,7 +86,10 @@
                   size="sm"
                 />
                 <q-btn
-                  @click="deleteSweet(sweet)"
+                  @click="
+                    dialog = true;
+                    getSweetId(sweet);
+                  "
                   flat
                   round
                   color="grey"
@@ -99,6 +102,45 @@
         </transition-group>
       </q-list>
     </q-scroll-area>
+    <q-dialog v-model="dialog" persistent>
+      <q-card
+        class="my-card"
+        style="width: 380px; border-radius: 25px; padding: 16px"
+      >
+        <q-card-section class="row items-center q-gutter-sm">
+          <span class="text-h5 text-bold">Delete Sweet?</span>
+          <span class="text-body1 text-center">
+            This can't be undone and it will be removed from your profile, the
+            timeline of any accounts that follow you, and from Switter search
+            results.
+          </span>
+        </q-card-section>
+
+        <q-card-actions align="around">
+          <q-btn
+            class="q-mb-sm"
+            unelevated
+            rounded
+            no-caps
+            color="primary"
+            label="Cancel"
+            style="padding: 10px 20px"
+            v-close-popup
+          />
+          <q-btn
+            class="q-mb-sm"
+            unelevated
+            rounded
+            no-caps
+            color="primary"
+            label="Delete"
+            style="padding: 10px 20px"
+            @click="deleteSweet()"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -119,9 +161,10 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "PageHome",
-
   data() {
     return {
+      dialog: false,
+      sweetId: "",
       newSweetContent: "",
       sweets: [
         // {
@@ -149,8 +192,11 @@ export default defineComponent({
       console.log("Document written with ID: ", docRef.id);
       this.newSweetContent = "";
     },
-    deleteSweet(sweet) {
-      deleteDoc(doc(db, "sweets", sweet.id));
+    getSweetId(sweet) {
+      this.sweetId = sweet.id;
+    },
+    deleteSweet() {
+      deleteDoc(doc(db, "sweets", this.sweetId));
     },
     toggleLiked(sweet) {
       updateDoc(doc(db, "sweets", sweet.id), {
